@@ -1,0 +1,11 @@
+scanner.ErrorList{
+  &scanner.Error{
+    Pos: token.Position{
+      Filename: "first.go",
+      Offset: 41,
+      Line: 5,
+      Column: 5,
+    },
+    Msg: "expected 'IDENT', found 'INT' 323",
+  },
+}

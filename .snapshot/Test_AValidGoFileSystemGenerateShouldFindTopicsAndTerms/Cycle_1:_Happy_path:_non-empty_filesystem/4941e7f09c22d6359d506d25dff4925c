@@ -1,0 +1,75 @@
+kman.Documentation{
+  RootTopic: kman.TopicRef{
+    Item: kman.Item{
+      FileName: "first.go",
+      Line: 0,
+      Title: "Root",
+      Handle: "",
+      Content: "This is the root",
+    },
+    Children: []kman.TopicRef{
+      kman.TopicRef{
+        Item: kman.Item{
+          FileName: "path/second.go",
+          Line: 0,
+          Title: "godoc level",
+          Handle: "godoc_level",
+          Content: "Hello",
+        },
+        Children: nil,
+      },
+      kman.TopicRef{
+        Item: kman.Item{
+          FileName: "path/second.go",
+          Line: 0,
+          Title: "topic 3",
+          Handle: "my-handle",
+          Content: "This is my content",
+        },
+        Children: nil,
+      },
+      kman.TopicRef{
+        Item: kman.Item{
+          FileName: "path/second.go",
+          Line: 0,
+          Title: "Title",
+          Handle: "topic",
+          Content: "One thing",
+        },
+        Children: []kman.TopicRef{
+          kman.TopicRef{
+            Item: kman.Item{
+              FileName: "path/second.go",
+              Line: 0,
+              Title: "topic 4",
+              Handle: "4",
+              Content: "Handle should be implied.\n\nLine 2",
+            },
+            Children: nil,
+          },
+          kman.TopicRef{
+            Item: kman.Item{
+              FileName: "path/second.go",
+              Line: 0,
+              Title: "topic 5",
+              Handle: "5",
+              Content: "Line 1\nLine 2",
+            },
+            Children: nil,
+          },
+          kman.TopicRef{
+            Item: kman.Item{
+              FileName: "path/second.go",
+              Line: 0,
+              Title: "Title",
+              Handle: "subtopic",
+              Content: "Another thing",
+            },
+            Children: nil,
+          },
+        },
+      },
+    },
+  },
+  Glossary: nil,
+}

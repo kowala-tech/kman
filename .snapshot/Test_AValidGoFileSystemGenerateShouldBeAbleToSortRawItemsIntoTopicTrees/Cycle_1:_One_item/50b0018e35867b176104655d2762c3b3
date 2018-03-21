@@ -1,0 +1,10 @@
+kman.TopicRef{
+  Item: kman.Item{
+    FileName: "",
+    Line: 0,
+    Title: "",
+    Handle: "",
+    Content: "",
+  },
+  Children: nil,
+}

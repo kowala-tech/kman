@@ -1,0 +1,20 @@
+map[string]*ast.File{
+  "path/to/first.go": &ast.File{
+    Doc: nil,
+    Package: 1,
+    Name: &ast.Ident{
+      NamePos: 9,
+      Name: "test",
+      Obj: nil,
+    },
+    Decls: nil,
+    Scope: &ast.Scope{
+      Outer: nil,
+      Objects: map[string]*ast.Object{
+      },
+    },
+    Imports: nil,
+    Unresolved: nil,
+    Comments: nil,
+  },
+}

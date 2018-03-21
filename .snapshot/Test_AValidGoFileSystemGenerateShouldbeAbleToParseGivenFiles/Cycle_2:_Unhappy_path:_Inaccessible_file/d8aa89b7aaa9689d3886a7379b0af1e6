@@ -1,0 +1,5 @@
+&os.PathError{
+  Op: "open",
+  Path: "path/to/first.go",
+  Err: &errors.errorString{},
+}
