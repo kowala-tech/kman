@@ -1,5 +1,6 @@
 kman.TopicRef{
   Item: kman.Item{
+    Type: 0,
     FileName: "",
     Line: 0,
     Title: "",
@@ -9,6 +10,7 @@ kman.TopicRef{
   Children: []kman.TopicRef{
     kman.TopicRef{
       Item: kman.Item{
+        Type: 0,
         FileName: "",
         Line: 0,
         Title: "",
@@ -18,6 +20,7 @@ kman.TopicRef{
       Children: []kman.TopicRef{
         kman.TopicRef{
           Item: kman.Item{
+            Type: 0,
             FileName: "",
             Line: 0,
             Title: "",
@@ -27,6 +30,7 @@ kman.TopicRef{
           Children: []kman.TopicRef{
             kman.TopicRef{
               Item: kman.Item{
+                Type: 0,
                 FileName: "",
                 Line: 0,
                 Title: "",
@@ -39,6 +43,7 @@ kman.TopicRef{
         },
         kman.TopicRef{
           Item: kman.Item{
+            Type: 0,
             FileName: "",
             Line: 0,
             Title: "",
@@ -48,6 +53,7 @@ kman.TopicRef{
           Children: []kman.TopicRef{
             kman.TopicRef{
               Item: kman.Item{
+                Type: 0,
                 FileName: "",
                 Line: 0,
                 Title: "",

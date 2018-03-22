@@ -19,6 +19,7 @@ func NewItemiserFromString(path, input string) Itemiser {
 	}
 }
 
+// TODO! add Type to Items
 func (s *itemiserString) Itemise(items *[]Item) error {
 
 	lines := strings.Split(s.input, "\n")

@@ -1,5 +1,6 @@
 []kman.Item{
   kman.Item{
+    Type: 0,
     FileName: "some-path.ext",
     Line: 0,
     Title: "test 1",

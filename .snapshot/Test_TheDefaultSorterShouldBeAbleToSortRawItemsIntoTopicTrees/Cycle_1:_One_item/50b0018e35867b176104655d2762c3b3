@@ -1,5 +1,6 @@
 kman.TopicRef{
   Item: kman.Item{
+    Type: 0,
     FileName: "",
     Line: 0,
     Title: "",
