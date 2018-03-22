@@ -7,13 +7,12 @@ import (
 	"github.com/kowala-tech/snaptest"
 )
 
-// TODO! test sort topics and terms
-func Test_TheDefaultSorterShouldBeAbleToSortRawItemsIntoTopicTrees(t *testing.T) {
+func Test_ADefaultSorterShouldBeAbleToSortRawItemsIntoTopicTrees(t *testing.T) {
+
 	for cycle, test := range []struct {
 		description string
 
-		input  []Item
-		output TopicRef
+		input []Item
 	}{
 		{
 			description: "No items",
@@ -75,9 +74,55 @@ func Test_TheDefaultSorterShouldBeAbleToSortRawItemsIntoTopicTrees(t *testing.T)
 	} {
 		t.Run(fmt.Sprintf("Cycle %d: %s", cycle, test.description), func(t *testing.T) {
 
-			generator := &sorter{}
+			sorter := &sorter{}
 
-			snaptest.Snapshot(t, generator.sortItemsToTopicTree(test.input))
+			snaptest.Snapshot(t, sorter.sortItemsToTopicTree(test.input))
 		})
 	}
+}
+
+func Test_ADefaultSorterShouldBeAbleToOrganiseTermsIntoAGlossary(t *testing.T) {
+
+	for cycle, test := range []struct {
+		description string
+
+		input []Item
+	}{
+		{
+			description: "No items",
+		},
+		{
+			description: "One item",
+			input: []Item{
+				Item{Title: "A", Handle: "Anything"},
+			},
+		},
+		{
+			description: "Three items",
+			input: []Item{
+				Item{Handle: "a", Title: "c"},
+				Item{Handle: "c", Title: "a"},
+				Item{Handle: "b", Title: "b"},
+			},
+		},
+	} {
+		t.Run(fmt.Sprintf("Cycle %d: %s", cycle, test.description), func(t *testing.T) {
+
+			sorter := &sorter{}
+
+			snaptest.Snapshot(t, sorter.sortItemsToGlossary(test.input))
+		})
+	}
+}
+
+func Test_ADefaultSortedCanSortMixedItemsIntoDocumentation(t *testing.T) {
+
+	sorter := &sorter{}
+
+	snaptest.Snapshot(t, sorter.Sort([]Item{
+		Item{Type: ItemTypeTopic, Handle: "A", Title: "A"},
+		Item{Type: ItemTypeTopic, Handle: "A_B", Title: "B"},
+		Item{Type: ItemTypeTopic, Handle: "A_B_C", Title: "C"},
+		Item{Type: ItemTypeTerm, Handle: "D", Title: "D"},
+	}))
 }

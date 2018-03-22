@@ -4,6 +4,7 @@ import "strings"
 
 const (
 	topicToken  = "topic:"
+	termToken   = "term:"
 	handleToken = "handle:"
 )
 
@@ -19,21 +20,21 @@ func NewItemiserFromString(path, input string) Itemiser {
 	}
 }
 
-// TODO! add Type to Items
 func (s *itemiserString) Itemise(items *[]Item) error {
 
 	lines := strings.Split(s.input, "\n")
 
-	topic, handle, content := "", "", []string{}
+	title, handle, content, typ := "", "", []string{}, ItemTypeTopic
 
 	reset := func() {
-		topic, handle, content = "", "", []string{}
+		title, handle, content, typ = "", "", []string{}, ItemTypeTopic
 	}
 
-	addItem := func() {
+	addItem := func(typ ItemType) {
 		*items = append(*items, Item{
+			Type:     typ,
 			FileName: s.path,
-			Title:    topic,
+			Title:    title,
 			Handle:   handle,
 			Content:  strings.Trim(strings.Join(content, "\n"), "\n"),
 		})
@@ -44,23 +45,35 @@ func (s *itemiserString) Itemise(items *[]Item) error {
 
 		if strings.HasPrefix(strings.ToLower(line), topicToken) {
 
-			if topic != "" && len(lines) > 0 {
-				addItem()
+			if title != "" && len(lines) > 0 {
+				addItem(typ)
 				reset()
 			}
 
-			topic = strings.TrimSpace(line[len(topicToken):])
-			handle = s.handlise(topic)
+			title = strings.TrimSpace(line[len(topicToken):])
+			handle = s.handlise(title)
+			typ = ItemTypeTopic
+
+		} else if strings.HasPrefix(strings.ToLower(line), termToken) {
+
+			if title != "" && len(lines) > 0 {
+				addItem(typ)
+				reset()
+			}
+
+			title = strings.TrimSpace(line[len(topicToken):])
+			handle = s.handlise(title)
+			typ = ItemTypeTerm
 
 		} else if strings.HasPrefix(strings.ToLower(line), handleToken) {
 			handle = strings.TrimSpace(line[len(handleToken):])
-		} else if topic != "" {
+		} else if title != "" {
 			content = append(content, line)
 		}
 	}
 
-	if topic != "" {
-		addItem()
+	if title != "" {
+		addItem(typ)
 	}
 
 	return nil

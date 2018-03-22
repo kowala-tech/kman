@@ -81,6 +81,56 @@ func Test_AValidItemiserStringShouldFindTopicsAndTerms(t *testing.T) {
 `,
 			err: false,
 		},
+		{
+			description: "One term; default handle",
+			input: `
+	Term: test 1
+	Line 1
+		Line 2
+`,
+			err: false,
+		},
+		{
+			description: "One term; specific handle",
+			input: `
+	Term: test 1
+	Handle: some_other_title
+	Line 1
+`,
+			err: false,
+		},
+		{
+			description: "Two terms; one specific handle",
+			input: `
+	Term: test 1
+	Handle: some_other_title
+	Line 1
+
+	Term: test 2
+	Line 2
+`,
+			err: false,
+		},
+		{
+			description: "Mixed",
+			input: `
+
+	Topic: test A
+	Line A
+
+	Topic: test B
+	Handle: some_title
+	Line B
+
+	Term: test 1
+	Handle: some_other_title
+	Line 1
+
+	Term: test 2
+	Line 2
+`,
+			err: false,
+		},
 	} {
 		t.Run(fmt.Sprintf("Cycle %d: %s", cycle, test.description), func(t *testing.T) {
 
