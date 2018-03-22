@@ -1,0 +1,25 @@
+kman.Documentation{
+  RootTopic: kman.TopicRef{
+    Item: kman.Item{
+      Type: 0,
+      FileName: "",
+      Line: 0,
+      Title: "A",
+      Handle: "",
+      Content: "",
+    },
+    Children: nil,
+  },
+  Glossary: []kman.TermRef{
+    kman.TermRef{
+      Item: kman.Item{
+        Type: 1,
+        FileName: "",
+        Line: 0,
+        Title: "B",
+        Handle: "B",
+        Content: "",
+      },
+    },
+  },
+}

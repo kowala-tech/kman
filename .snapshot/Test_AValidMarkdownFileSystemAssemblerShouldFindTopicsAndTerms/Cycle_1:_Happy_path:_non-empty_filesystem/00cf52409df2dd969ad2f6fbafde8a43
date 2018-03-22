@@ -1,0 +1,18 @@
+[]kman.Item{
+  kman.Item{
+    Type: 0,
+    FileName: "first.md",
+    Line: 0,
+    Title: "A",
+    Handle: "a",
+    Content: "Line 1",
+  },
+  kman.Item{
+    Type: 1,
+    FileName: "first.md",
+    Line: 0,
+    Title: "B",
+    Handle: "b",
+    Content: "Line 2",
+  },
+}
