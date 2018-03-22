@@ -1,0 +1,34 @@
+[]kman.Item{
+  kman.Item{
+    Type: 0,
+    FileName: "some-path.ext",
+    Line: 0,
+    Title: "test A",
+    Handle: "test_a",
+    Content: "Line A",
+  },
+  kman.Item{
+    Type: 0,
+    FileName: "some-path.ext",
+    Line: 0,
+    Title: "test B",
+    Handle: "some_title",
+    Content: "Line B",
+  },
+  kman.Item{
+    Type: 1,
+    FileName: "some-path.ext",
+    Line: 0,
+    Title: "test 1",
+    Handle: "some_other_title",
+    Content: "Line 1",
+  },
+  kman.Item{
+    Type: 1,
+    FileName: "some-path.ext",
+    Line: 0,
+    Title: "test 2",
+    Handle: "test_2",
+    Content: "Line 2",
+  },
+}

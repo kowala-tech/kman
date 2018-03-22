@@ -1,0 +1,34 @@
+kman.TopicRef{
+  Item: kman.Item{
+    Type: 0,
+    FileName: "",
+    Line: 0,
+    Title: "",
+    Handle: "",
+    Content: "",
+  },
+  Children: []kman.TopicRef{
+    kman.TopicRef{
+      Item: kman.Item{
+        Type: 0,
+        FileName: "",
+        Line: 0,
+        Title: "",
+        Handle: "a",
+        Content: "",
+      },
+      Children: nil,
+    },
+    kman.TopicRef{
+      Item: kman.Item{
+        Type: 0,
+        FileName: "",
+        Line: 0,
+        Title: "",
+        Handle: "b",
+        Content: "",
+      },
+      Children: nil,
+    },
+  },
+}

@@ -1,0 +1,32 @@
+[]kman.TermRef{
+  kman.TermRef{
+    Item: kman.Item{
+      Type: 0,
+      FileName: "",
+      Line: 0,
+      Title: "a",
+      Handle: "c",
+      Content: "",
+    },
+  },
+  kman.TermRef{
+    Item: kman.Item{
+      Type: 0,
+      FileName: "",
+      Line: 0,
+      Title: "b",
+      Handle: "b",
+      Content: "",
+    },
+  },
+  kman.TermRef{
+    Item: kman.Item{
+      Type: 0,
+      FileName: "",
+      Line: 0,
+      Title: "c",
+      Handle: "a",
+      Content: "",
+    },
+  },
+}

@@ -1,0 +1,49 @@
+kman.Documentation{
+  RootTopic: kman.TopicRef{
+    Item: kman.Item{
+      Type: 0,
+      FileName: "",
+      Line: 0,
+      Title: "A",
+      Handle: "",
+      Content: "",
+    },
+    Children: []kman.TopicRef{
+      kman.TopicRef{
+        Item: kman.Item{
+          Type: 0,
+          FileName: "",
+          Line: 0,
+          Title: "B",
+          Handle: "A_B",
+          Content: "",
+        },
+        Children: []kman.TopicRef{
+          kman.TopicRef{
+            Item: kman.Item{
+              Type: 0,
+              FileName: "",
+              Line: 0,
+              Title: "C",
+              Handle: "C",
+              Content: "",
+            },
+            Children: nil,
+          },
+        },
+      },
+    },
+  },
+  Glossary: []kman.TermRef{
+    kman.TermRef{
+      Item: kman.Item{
+        Type: 1,
+        FileName: "",
+        Line: 0,
+        Title: "D",
+        Handle: "D",
+        Content: "",
+      },
+    },
+  },
+}
