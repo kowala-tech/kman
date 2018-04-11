@@ -1,12 +1,5 @@
 pipeline:
 
-  test:
-    image: kowalatech/go:1.0.1
-    commands:
-      - go test
-    when:
-      event: [push]
-
   docker_dev:
     group: docker-deployment
     image: plugins/docker
