@@ -2,19 +2,43 @@ package main
 
 import (
 	"flag"
-	"fmt"
-	"os"
+	"log"
+	"net/http"
 
 	"github.com/kowala-tech/kman"
-	"github.com/sanity-io/litter"
+	"github.com/spf13/afero"
 )
 
-var parseGo = flag.Bool("go", false, "Parse Go files")
-var parseMd = flag.Bool("md", false, "Parse Markdown files")
+var (
+	parseGo      = flag.Bool("go", false, "Parse Go files")
+	parseMd      = flag.Bool("md", true, "Parse Markdown files")
+	templatePath = flag.String("theme", "themes/kman", "Theme path")
+	outputPath   = flag.String("output", "public", "Public assets output path")
+	httpAddress  = flag.String("http", "", "Serve http on a given address (for example, :8080)")
+)
 
 func main() {
 
 	flag.Parse()
+
+	build()
+
+	if *httpAddress != "" {
+
+		server := http.FileServer(http.Dir(*outputPath))
+
+		http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+			log.Println("Rebuilding...")
+			build()
+			server.ServeHTTP(w, r)
+		})
+
+		log.Printf("Serving documentation on %s\n", *httpAddress)
+		log.Fatal(http.ListenAndServe(*httpAddress, nil))
+	}
+}
+
+func build() {
 
 	var assemblers []kman.Assembler
 
@@ -31,9 +55,16 @@ func main() {
 	doc, err := docker.Document()
 
 	if err != nil {
-		fmt.Println("Error:", err)
-		os.Exit(1)
+		log.Fatal("Error 01:", err)
 	}
 
-	litter.Dump(doc)
+	renderer := kman.NewRendererAce(
+		afero.NewOsFs(),
+		*templatePath,
+		*outputPath,
+	)
+
+	if err := renderer.Render(doc); err != nil {
+		log.Fatal("Error 02:", err)
+	}
 }

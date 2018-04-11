@@ -8,16 +8,34 @@
   version = "v1.1.0"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/endiangroup/snaptest"
+  packages = ["."]
+  revision = "2524ada5b7284ba268711456cd205482f92011c8"
+
+[[projects]]
   name = "github.com/pmezard/go-difflib"
   packages = ["difflib"]
   revision = "792786c7400a136282c1664665ae0a8db921c6c2"
   version = "v1.0.0"
 
 [[projects]]
+  name = "github.com/russross/blackfriday"
+  packages = ["."]
+  revision = "cadec560ec52d93835bf2f15bd794700d3a2473b"
+  version = "v2.0.0"
+
+[[projects]]
   name = "github.com/sanity-io/litter"
   packages = ["."]
   revision = "ae543b7ba8fd6af63e4976198f146e1348ae53c1"
   version = "v1.1.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/shurcooL/sanitized_anchor_name"
+  packages = ["."]
+  revision = "86672fcb3f950f35f2e675df2240550f2a50762f"
 
 [[projects]]
   name = "github.com/spf13/afero"
@@ -38,6 +56,12 @@
   version = "v1.2.1"
 
 [[projects]]
+  name = "github.com/yosssi/ace"
+  packages = ["."]
+  revision = "ea038f4770b6746c3f8f84f14fa60d9fe1205b56"
+  version = "v0.0.5"
+
+[[projects]]
   name = "golang.org/x/text"
   packages = [
     "internal/gen",
@@ -53,6 +77,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "01700b5043c4d6d325c69ac9ea83bc033eb0e04a1a21e437da5229919e49b242"
+  inputs-digest = "40bb3df8ca35c54750e302c0309b358bfbb3f90fb9d70beefdea9c725bea3463"
   solver-name = "gps-cdcl"
   solver-version = 1

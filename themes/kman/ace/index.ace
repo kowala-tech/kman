@@ -1,0 +1,4 @@
+= content main
+  h2 {{.Context.Title}}
+  .topic {{.Context.HTML}}
+

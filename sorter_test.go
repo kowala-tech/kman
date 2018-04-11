@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/kowala-tech/snaptest"
+	"github.com/endiangroup/snaptest"
 )
 
 func Test_ADefaultSorterShouldBeAbleToSortRawItemsIntoTopicTrees(t *testing.T) {

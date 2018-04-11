@@ -2,23 +2,12 @@ package kman
 
 import (
 	"fmt"
-	"os"
 	"testing"
 
-	"github.com/kowala-tech/snaptest"
+	"github.com/endiangroup/snaptest"
 	"github.com/spf13/afero"
 	"github.com/stretchr/testify/require"
 )
-
-func newMockGoFileSystem(t *testing.T, files map[string]string) afero.Fs {
-	fs := afero.NewMemMapFs()
-
-	for path, content := range files {
-		require.Nil(t, afero.WriteFile(fs, path, []byte(content), os.ModePerm))
-	}
-
-	return fs
-}
 
 func Test_AValidGoFileSystemAssemblerShouldbeAbleToFindGoFiles(t *testing.T) {
 
@@ -30,11 +19,11 @@ func Test_AValidGoFileSystemAssemblerShouldbeAbleToFindGoFiles(t *testing.T) {
 	}{
 		{
 			description: "Empty filesystem",
-			input:       newMockGoFileSystem(t, map[string]string{}),
+			input:       newMockFilesystem(t, map[string]string{}),
 		},
 		{
 			description: "Non-empty filesystem",
-			input: newMockGoFileSystem(t, map[string]string{
+			input: newMockFilesystem(t, map[string]string{
 				"valid.go":            `package test`,
 				"empty.go":            ``,
 				"not-go.txt":          `package test`,
@@ -49,7 +38,7 @@ func Test_AValidGoFileSystemAssemblerShouldbeAbleToFindGoFiles(t *testing.T) {
 	} {
 		t.Run(fmt.Sprintf("Cycle %d: %s", cycle, test.description), func(t *testing.T) {
 
-			generator := &goAssemblerFileSystem{
+			generator := &assemblerGoFilesystem{
 				fs: test.input,
 			}
 
@@ -80,7 +69,7 @@ func Test_AValidGoFileSystemAssemblerShouldbeAbleToParseGivenFiles(t *testing.T)
 		{
 			description: "Happy path: empty filesystem",
 			input: input{
-				fs:    newMockGoFileSystem(t, map[string]string{}),
+				fs:    newMockFilesystem(t, map[string]string{}),
 				files: []string{},
 			},
 			output: output{},
@@ -88,7 +77,7 @@ func Test_AValidGoFileSystemAssemblerShouldbeAbleToParseGivenFiles(t *testing.T)
 		{
 			description: "Happy path: non-empty filesystem",
 			input: input{
-				fs: newMockGoFileSystem(t, map[string]string{
+				fs: newMockFilesystem(t, map[string]string{
 					"path/to/first.go": `package test`,
 				}),
 				files: []string{"path/to/first.go"},
@@ -98,7 +87,7 @@ func Test_AValidGoFileSystemAssemblerShouldbeAbleToParseGivenFiles(t *testing.T)
 		{
 			description: "Unhappy path: Inaccessible file",
 			input: input{
-				fs:    newMockGoFileSystem(t, map[string]string{}),
+				fs:    newMockFilesystem(t, map[string]string{}),
 				files: []string{"path/to/first.go"},
 			},
 			output: output{
@@ -108,7 +97,7 @@ func Test_AValidGoFileSystemAssemblerShouldbeAbleToParseGivenFiles(t *testing.T)
 		{
 			description: "Unhappy path: Syntax error",
 			input: input{
-				fs: newMockGoFileSystem(t, map[string]string{
+				fs: newMockFilesystem(t, map[string]string{
 					"path/to/first.go": `package1 test`,
 				}),
 				files: []string{"path/to/first.go"},
@@ -120,7 +109,7 @@ func Test_AValidGoFileSystemAssemblerShouldbeAbleToParseGivenFiles(t *testing.T)
 	} {
 		t.Run(fmt.Sprintf("Cycle %d: %s", cycle, test.description), func(t *testing.T) {
 
-			generator := &goAssemblerFileSystem{
+			generator := &assemblerGoFilesystem{
 				fs: test.input.fs,
 			}
 
@@ -157,14 +146,14 @@ func Test_AValidGoFileSystemAssemblerShouldFindTopicsAndTerms(t *testing.T) {
 		{
 			description: "Happy path: Empty filesystem",
 			input: input{
-				fs: newMockGoFileSystem(t, map[string]string{}),
+				fs: newMockFilesystem(t, map[string]string{}),
 			},
 			output: output{},
 		},
 		{
 			description: "Happy path: non-empty filesystem",
 			input: input{
-				fs: newMockGoFileSystem(t, map[string]string{
+				fs: newMockFilesystem(t, map[string]string{
 					"first.go": `package first
 /*
 This is the root
@@ -224,7 +213,7 @@ func d(){}
 		{
 			description: "Unhappy path: parser error",
 			input: input{
-				fs: newMockGoFileSystem(t, map[string]string{
+				fs: newMockFilesystem(t, map[string]string{
 					"first.go": `package first
 /*
 This is the root
@@ -238,7 +227,7 @@ var 323_ = kman.Topic("Root")
 	} {
 		t.Run(fmt.Sprintf("Cycle %d: %s", cycle, test.description), func(t *testing.T) {
 
-			generator := &goAssemblerFileSystem{
+			generator := &assemblerGoFilesystem{
 				fs: test.input.fs,
 			}
 

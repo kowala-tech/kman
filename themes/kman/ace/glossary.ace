@@ -1,0 +1,7 @@
+= content main
+  h2 Glossary
+  {{range .Context}}
+  .term
+    h3 name="{{.Handle}}" {{.Title}}
+    .topic {{.HTML}}
+  {{end}}

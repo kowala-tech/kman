@@ -17,12 +17,12 @@ const (
 	termRef  = "kman.Term"
 )
 
-type goAssemblerFileSystem struct {
+type assemblerGoFilesystem struct {
 	fs afero.Fs
 }
 
 func NewGoAssemblerWithFilesystem(fs afero.Fs) Assembler {
-	return &goAssemblerFileSystem{
+	return &assemblerGoFilesystem{
 		fs: fs,
 	}
 }
@@ -31,8 +31,7 @@ func NewGoAssemblerFromLocalFilesystem() Assembler {
 	return NewGoAssemblerWithFilesystem(afero.NewOsFs())
 }
 
-func (g *goAssemblerFileSystem) Assemble() ([]Item, error) {
-
+func (g *assemblerGoFilesystem) Assemble() ([]Item, error) {
 	docItems := []Item{}
 
 	astFiles, err := g.parseFiles(g.findGoFiles())
@@ -57,7 +56,7 @@ func (g *goAssemblerFileSystem) Assemble() ([]Item, error) {
 	return docItems, nil
 }
 
-func (g *goAssemblerFileSystem) findGoFiles() (files []string) {
+func (g *assemblerGoFilesystem) findGoFiles() (files []string) {
 
 	afero.Walk(g.fs, ".", func(path string, info os.FileInfo, err error) error {
 
@@ -71,7 +70,7 @@ func (g *goAssemblerFileSystem) findGoFiles() (files []string) {
 	return
 }
 
-func (g *goAssemblerFileSystem) parseFiles(paths []string) (map[string]*ast.File, error) {
+func (g *assemblerGoFilesystem) parseFiles(paths []string) (map[string]*ast.File, error) {
 
 	fileSet := token.NewFileSet()
 	astFiles := make(map[string]*ast.File)
@@ -96,7 +95,7 @@ func (g *goAssemblerFileSystem) parseFiles(paths []string) (map[string]*ast.File
 	return astFiles, nil
 }
 
-func (g *goAssemblerFileSystem) findReference(path, symbol string, n ast.Node, items *[]Item, itemType ItemType) {
+func (g *assemblerGoFilesystem) findReference(path, symbol string, n ast.Node, items *[]Item, itemType ItemType) {
 
 	switch x := n.(type) {
 	case *ast.GenDecl:
@@ -107,7 +106,7 @@ func (g *goAssemblerFileSystem) findReference(path, symbol string, n ast.Node, i
 	}
 }
 
-func (g *goAssemblerFileSystem) findCommentReference(path string, x *ast.CommentGroup, items *[]Item) error {
+func (g *assemblerGoFilesystem) findCommentReference(path string, x *ast.CommentGroup, items *[]Item) error {
 
 	if x == nil {
 		return nil
@@ -123,7 +122,7 @@ func (g *goAssemblerFileSystem) findCommentReference(path string, x *ast.Comment
 	return nil
 }
 
-func (g *goAssemblerFileSystem) findVarReference(path, symbol string, x *ast.GenDecl, items *[]Item, itemType ItemType) {
+func (g *assemblerGoFilesystem) findVarReference(path, symbol string, x *ast.GenDecl, items *[]Item, itemType ItemType) {
 
 	if len(x.Specs) == 0 {
 		return

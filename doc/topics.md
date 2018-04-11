@@ -1,4 +1,4 @@
-Topic: k-man: intuitive documentation parser and presenter
+Topic: Home
 Handle: root
 
 This is an example topic which forms the root

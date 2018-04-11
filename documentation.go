@@ -1,5 +1,11 @@
 package kman
 
+import (
+	"html/template"
+
+	"github.com/russross/blackfriday"
+)
+
 type Documentation struct {
 	RootTopic TopicRef
 	Glossary  []TermRef
@@ -20,6 +26,10 @@ type Item struct {
 	Title    string
 	Handle   string
 	Content  string
+}
+
+func (i Item) HTML() template.HTML {
+	return template.HTML(blackfriday.Run([]byte(i.Content)))
 }
 
 type itemListHandleSorter []Item

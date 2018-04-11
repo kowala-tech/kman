@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/kowala-tech/snaptest"
+	"github.com/endiangroup/snaptest"
 	"github.com/stretchr/testify/require"
 )
 

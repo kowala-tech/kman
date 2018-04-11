@@ -1,0 +1,8 @@
+li
+  a href="{{.URL}}" {{.Title}}
+    {{with .Children}}
+    ul
+      {{range .}}
+      = include menu .
+      {{end}}
+    {{end}}

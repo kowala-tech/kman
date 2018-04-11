@@ -1,0 +1,22 @@
+kman.rendererAceNavigation{
+  Title: "k-man: intuitive documentation parser and presenter",
+  URL: "/",
+  Children: []kman.rendererAceNavigation{
+    kman.rendererAceNavigation{
+      Title: "Usage",
+      URL: "/usage",
+      Children: []kman.rendererAceNavigation{
+        kman.rendererAceNavigation{
+          Title: "Usage: advanced",
+          URL: "/usage/advanced",
+          Children: nil,
+        },
+      },
+    },
+    kman.rendererAceNavigation{
+      Title: "Glossary",
+      URL: "/glossary",
+      Children: nil,
+    },
+  },
+}

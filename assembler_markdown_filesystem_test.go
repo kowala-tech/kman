@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/kowala-tech/snaptest"
+	"github.com/endiangroup/snaptest"
 	"github.com/spf13/afero"
 	"github.com/stretchr/testify/require"
 )
@@ -34,7 +34,7 @@ func Test_AValidMarkdownFileSystemAssemblerShouldbeAbleToFindGoFiles(t *testing.
 		},
 		{
 			description: "Non-empty filesystem",
-			input: newMockGoFileSystem(t, map[string]string{
+			input: newMockFilesystem(t, map[string]string{
 				"valid.md":            `hello`,
 				"valid.markdown":      `hello`,
 				"empty.md":            ``,
@@ -51,7 +51,7 @@ func Test_AValidMarkdownFileSystemAssemblerShouldbeAbleToFindGoFiles(t *testing.
 	} {
 		t.Run(fmt.Sprintf("Cycle %d: %s", cycle, test.description), func(t *testing.T) {
 
-			assembler := &markdownAssemblerFileSystem{
+			assembler := &assemblerMarkdownFilesystem{
 				fs: test.input,
 			}
 
@@ -101,7 +101,7 @@ Line 2
 	} {
 		t.Run(fmt.Sprintf("Cycle %d: %s", cycle, test.description), func(t *testing.T) {
 
-			assembler := &markdownAssemblerFileSystem{
+			assembler := &assemblerMarkdownFilesystem{
 				fs: test.input.fs,
 			}
 

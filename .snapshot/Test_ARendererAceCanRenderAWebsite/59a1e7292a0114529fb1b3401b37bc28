@@ -1,0 +1,14 @@
+map[string]string{
+  "public/glossary/index.html": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Example</title></head><body><h1>This is a base template</h1><h2>Glossary</h2></body></html>",
+  "public/images/logo.svg": "B",
+  "public/index.html": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Example</title></head><body><h1>This is a base template</h1><h2>Index</h2><div class=\"topic\"><p>This is an example topic which forms the root</p>\n</div></body></html>",
+  "public/robots.txt": "A",
+  "public/usage/advanced/index.html": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Example</title></head><body><h1>This is a base template</h1><h2>Topic</h2></body></html>",
+  "public/usage/index.html": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Example</title></head><body><h1>This is a base template</h1><h2>Topic</h2></body></html>",
+  "template/ace/glossary.ace": "\n= content main\n  h2 Glossary\n",
+  "template/ace/index.ace": "\n= content main\n  h2 Index\n  .topic {{.Context.HTML}}\n",
+  "template/ace/master.ace": "\n= doctype html\nhtml lang=en\n  head\n    meta charset=utf-8\n    title Example\n  body\n    h1 This is a base template\n    = yield main\n",
+  "template/ace/topic.ace": "\n= content main\n  h2 Topic\n",
+  "template/images/logo.svg": "B",
+  "template/robots.txt": "A",
+}

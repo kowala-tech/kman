@@ -7,12 +7,12 @@ import (
 	"github.com/spf13/afero"
 )
 
-type markdownAssemblerFileSystem struct {
+type assemblerMarkdownFilesystem struct {
 	fs afero.Fs
 }
 
 func NewMarkdownAssemblerWithFilesystem(fs afero.Fs) Assembler {
-	return &markdownAssemblerFileSystem{
+	return &assemblerMarkdownFilesystem{
 		fs: fs,
 	}
 }
@@ -21,7 +21,7 @@ func NewMarkdownAssemblerFromLocalFilesystem() Assembler {
 	return NewMarkdownAssemblerWithFilesystem(afero.NewOsFs())
 }
 
-func (m *markdownAssemblerFileSystem) Assemble() ([]Item, error) {
+func (m *assemblerMarkdownFilesystem) Assemble() ([]Item, error) {
 
 	docItems := []Item{}
 
@@ -43,7 +43,7 @@ func (m *markdownAssemblerFileSystem) Assemble() ([]Item, error) {
 	return docItems, nil
 }
 
-func (m *markdownAssemblerFileSystem) findMarkdownFiles() (files []string) {
+func (m *assemblerMarkdownFilesystem) findMarkdownFiles() (files []string) {
 
 	afero.Walk(m.fs, ".", func(path string, info os.FileInfo, err error) error {
 
