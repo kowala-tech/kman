@@ -1,0 +1,28 @@
+pipeline:
+
+  test:
+    image: kowalatech/go:1.0.1
+    commands:
+      - go test
+    when:
+      event: [push]
+
+  docker_dev:
+    group: docker-deployment
+    image: plugins/docker
+    repo: kowalatech/kman
+    secrets: [ docker_username, docker_password ]
+    tags: dev
+    when:
+      branch: [develop]
+      event: [push, tag]
+
+  docker_dev:
+    group: docker-deployment
+    image: plugins/docker
+    repo: kowalatech/kman
+    secrets: [ docker_username, docker_password ]
+    tags: latest
+    when:
+      branch: [master]
+      event: [push, tag]
