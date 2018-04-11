@@ -16,6 +16,3 @@ pipeline:
     repo: kowalatech/kman
     secrets: [ docker_username, docker_password ]
     tags: latest
-    when:
-      branch: [master]
-      event: [push, tag]
