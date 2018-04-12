@@ -1,6 +1,6 @@
 nav
-  ul
-    li
+  ul.vertical.menu
+    li class="{{if .Active}}is-active{{end}}"
       a href="{{.URL}}" {{.Title}}
     {{range .Children}}
     = include menu .

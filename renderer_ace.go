@@ -17,9 +17,11 @@ type rendererAce struct {
 }
 
 type rendererAceNavigation struct {
-	Title    string
-	URL      string
-	Children []rendererAceNavigation
+	Title       string
+	URL         string
+	Active      bool
+	ActiveChild bool
+	Children    []rendererAceNavigation
 }
 
 func NewRendererAce(fs afero.Fs, templatePath, outputPath string) Renderer {
@@ -49,27 +51,39 @@ func (r *rendererAce) Render(d Documentation) error {
 	return r.copyAssets()
 }
 
-func (r *rendererAce) navigation(d Documentation) (nav rendererAceNavigation) {
+func (r *rendererAce) navigation(d Documentation, currentPath string) (nav rendererAceNavigation) {
 
 	nav = rendererAceNavigation{
 		Title: d.RootTopic.Title,
 		URL:   "/",
 	}
 
-	r.navigationBranch("/", d.RootTopic.Children, &nav.Children)
+	if currentPath == "/" {
+		nav.Active = true
+	} else {
+		nav.ActiveChild = true
+	}
+
+	r.navigationBranch("/", currentPath, d.RootTopic.Children, &nav.Children)
 
 	if len(d.Glossary) > 0 {
-		nav.Children = append(nav.Children,
-			rendererAceNavigation{
-				Title: "Glossary",
-				URL:   "/glossary",
-			})
+
+		glossary := rendererAceNavigation{
+			Title: "Glossary",
+			URL:   "/glossary",
+		}
+
+		if currentPath == "/glossary" {
+			glossary.Active = true
+		}
+
+		nav.Children = append(nav.Children, glossary)
 	}
 
 	return
 }
 
-func (r *rendererAce) navigationBranch(root string, items []TopicRef, nav *[]rendererAceNavigation) {
+func (r *rendererAce) navigationBranch(root string, currentPath string, items []TopicRef, nav *[]rendererAceNavigation) {
 
 	for _, topic := range items {
 
@@ -80,7 +94,13 @@ func (r *rendererAce) navigationBranch(root string, items []TopicRef, nav *[]ren
 			URL:   url,
 		}
 
-		r.navigationBranch(url, topic.Children, &branch.Children)
+		if currentPath == url {
+			branch.Active = true
+		} else if strings.HasPrefix(currentPath, url) {
+			branch.ActiveChild = true
+		}
+
+		r.navigationBranch(url, currentPath, topic.Children, &branch.Children)
 
 		*nav = append(*nav, branch)
 	}
@@ -155,16 +175,20 @@ func (r *rendererAce) executeTemplate(src, dest string, d Documentation, context
 
 	var buf bytes.Buffer
 
+	pageURL := "/" + dest
+
 	args := struct {
 		Context    interface{}
 		Doc        Documentation
 		Navigation rendererAceNavigation
 		Glossary   []TermRef
+		PageURL    string
 	}{
 		Doc:        d,
 		Context:    context,
-		Navigation: r.navigation(d),
+		Navigation: r.navigation(d, pageURL),
 		Glossary:   d.Glossary,
+		PageURL:    pageURL,
 	}
 
 	if err := tpl.Execute(&buf, args); err != nil {

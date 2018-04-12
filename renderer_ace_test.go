@@ -107,7 +107,7 @@ func Test_AnAceRendererCanAssembleTheNav(t *testing.T) {
 	fs := newValidTemplateFilesystem(t)
 	renderer := NewRendererAce(fs, "template", "public")
 
-	snaptest.Snapshot(t, renderer.(*rendererAce).navigation(newValidDocumentation(t)))
+	snaptest.Snapshot(t, renderer.(*rendererAce).navigation(newValidDocumentation(t), "/usage/advanced"))
 }
 
 func Test_ARendererAceCanRenderAWebsite(t *testing.T) {

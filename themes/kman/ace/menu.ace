@@ -1,8 +1,8 @@
-li
+li class="{{if .Active}}is-active{{end}} {{if .ActiveChild}}has-active-child{{end}}"
   a href="{{.URL}}" {{.Title}}
-    {{with .Children}}
-    ul
-      {{range .}}
-      = include menu .
-      {{end}}
+  {{with .Children}}
+  ul.nested.vertical.menu
+    {{range .}}
+    = include menu .
     {{end}}
+  {{end}}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -21,16 +22,22 @@ func main() {
 
 	flag.Parse()
 
-	build()
+	if err := build(); err != nil {
+		log.Fatal(err)
+	}
 
 	if *httpAddress != "" {
 
 		server := http.FileServer(http.Dir(*outputPath))
 
 		http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-			log.Println("Rebuilding...")
-			build()
-			server.ServeHTTP(w, r)
+
+			if err := build(); err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				w.Write([]byte(err.Error()))
+			} else {
+				server.ServeHTTP(w, r)
+			}
 		})
 
 		log.Printf("Serving documentation on %s\n", *httpAddress)
@@ -38,7 +45,7 @@ func main() {
 	}
 }
 
-func build() {
+func build() error {
 
 	var assemblers []kman.Assembler
 
@@ -55,7 +62,7 @@ func build() {
 	doc, err := docker.Document()
 
 	if err != nil {
-		log.Fatal("Error 01:", err)
+		return fmt.Errorf("Error 01: %s", err)
 	}
 
 	renderer := kman.NewRendererAce(
@@ -65,6 +72,8 @@ func build() {
 	)
 
 	if err := renderer.Render(doc); err != nil {
-		log.Fatal("Error 02:", err)
+		return fmt.Errorf("Error 02: %s", err)
 	}
+
+	return nil
 }
