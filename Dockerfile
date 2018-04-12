@@ -9,7 +9,7 @@ RUN dep ensure
 RUN go install github.com/kowala-tech/kman/cmd/kman
 
 # Use a local version
-FROM kowalatech/hugo-dev
+FROM kowalatech/hugo-dev:1.0.4
 COPY --from=builder /kowala/workspace/bin/kman /kowala/workspace/bin
 EXPOSE 8080
 ADD themes .
