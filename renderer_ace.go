@@ -2,6 +2,9 @@ package kman
 
 import (
 	"bytes"
+	"encoding/json"
+	"fmt"
+	"html/template"
 	"os"
 	"path/filepath"
 	"strings"
@@ -24,6 +27,33 @@ type rendererAceNavigation struct {
 	Children    []rendererAceNavigation
 }
 
+func (r *rendererAceNavigation) flatten() (output []rendererAceNavigation) {
+	r.flattenToList(&output)
+	return
+}
+
+func (r *rendererAceNavigation) addToList(list *[]rendererAceNavigation) {
+
+	*list = append(
+		*list,
+		rendererAceNavigation{
+			Title:       r.Title,
+			URL:         r.URL,
+			Active:      r.Active,
+			ActiveChild: r.ActiveChild,
+		},
+	)
+}
+
+func (r *rendererAceNavigation) flattenToList(list *[]rendererAceNavigation) {
+
+	r.addToList(list)
+
+	for _, child := range r.Children {
+		child.flattenToList(list)
+	}
+}
+
 func NewRendererAce(fs afero.Fs, templatePath, outputPath string) Renderer {
 	return &rendererAce{
 		fs:           fs,
@@ -34,7 +64,7 @@ func NewRendererAce(fs afero.Fs, templatePath, outputPath string) Renderer {
 
 func (r *rendererAce) Render(d Documentation) error {
 
-	if err := r.executeTemplate("index", "", d, d.RootTopic); err != nil {
+	if err := r.executeTemplate("index", "", d, d.RootTopic.Title, d.RootTopic); err != nil {
 		return err
 	}
 
@@ -44,7 +74,7 @@ func (r *rendererAce) Render(d Documentation) error {
 		}
 	}
 
-	if err := r.executeTemplate("glossary", "glossary", d, d.Glossary); err != nil {
+	if err := r.executeTemplate("glossary", "glossary", d, "Glossary", d.Glossary); err != nil {
 		return err
 	}
 
@@ -136,7 +166,7 @@ func (r *rendererAce) renderTopic(parentPath string, doc Documentation, topic To
 
 	handle := filepath.Join(parentPath, topic.Handle)
 
-	if err := r.executeTemplate("topic", handle, doc, topic); err != nil {
+	if err := r.executeTemplate("topic", handle, doc, topic.Title, topic); err != nil {
 		return err
 	}
 
@@ -161,11 +191,12 @@ func (r *rendererAce) asset(file string) ([]byte, error) {
 	return afero.ReadFile(r.fs, file)
 }
 
-func (r *rendererAce) executeTemplate(src, dest string, d Documentation, context interface{}) error {
+func (r *rendererAce) executeTemplate(src, dest string, d Documentation, title string, context interface{}) error {
 
 	tpl, err := ace.Load("master", src, &ace.Options{
 		Asset:         r.asset,
 		DynamicReload: true,
+		FuncMap:       r.templateFuncs(),
 		BaseDir:       r.aceTemplatePath(),
 	})
 
@@ -176,19 +207,24 @@ func (r *rendererAce) executeTemplate(src, dest string, d Documentation, context
 	var buf bytes.Buffer
 
 	pageURL := "/" + dest
+	nav := r.navigation(d, pageURL)
 
 	args := struct {
-		Context    interface{}
-		Doc        Documentation
-		Navigation rendererAceNavigation
-		Glossary   []TermRef
-		PageURL    string
+		Context     interface{}
+		Doc         Documentation
+		Navigation  rendererAceNavigation
+		SearchItems []rendererAceNavigation
+		Glossary    []TermRef
+		Title       string
+		PageURL     string
 	}{
-		Doc:        d,
-		Context:    context,
-		Navigation: r.navigation(d, pageURL),
-		Glossary:   d.Glossary,
-		PageURL:    pageURL,
+		Doc:         d,
+		Context:     context,
+		Navigation:  nav,
+		SearchItems: nav.flatten(),
+		Glossary:    d.Glossary,
+		Title:       title,
+		PageURL:     pageURL,
 	}
 
 	if err := tpl.Execute(&buf, args); err != nil {
@@ -200,4 +236,19 @@ func (r *rendererAce) executeTemplate(src, dest string, d Documentation, context
 	}
 
 	return afero.WriteReader(r.fs, r.htmlPath(dest), &buf)
+}
+
+func (r *rendererAce) templateFuncs() template.FuncMap {
+	return template.FuncMap{
+		"json": func(inp interface{}) template.JS {
+
+			jsn, err := json.Marshal(inp)
+
+			if err == nil {
+				return template.JS(jsn)
+			}
+
+			return template.JS(fmt.Sprintf("{\"json.Marshal failed\":\"%s\"}", err))
+		},
+	}
 }

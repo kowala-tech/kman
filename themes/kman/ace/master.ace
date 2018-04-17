@@ -2,7 +2,7 @@
 html lang=en
   head
     meta charset=utf-8
-    title K-man docs
+    title {{.Title}} - K-man docs
     script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/js/foundation.min.js" integrity="sha256-mRYlCu5EG+ouD07WxLF8v4ZAZYCA6WrmdIXyn1Bv9Vk=" crossorigin="anonymous"
     link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.min.css" integrity="sha256-GSio8qamaXapM8Fq9JYdGNTvk/dgs+cMLgPeevOYEx0=" crossorigin="anonymous"
   body
@@ -20,4 +20,6 @@ html lang=en
           = include navigation .Navigation
         .cell.small-9
           = yield main
+    = javascript
+      window.SearchJSON = {{.SearchItems | json }}
 
